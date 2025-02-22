@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disappearing Target Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #2f2f2f;
+      color: #fff;
+      text-align: center;
+    }
+    .container {
+      max-width: 90%;
+      margin: auto;
+      background-color: #3b3b3b;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    h1 {
+      font-family: 'Aladin', cursive;
+      color: #1e90ff;
+      font-size: 3em;
+    }
+    h2, h3 {
+      color: #1e90ff;
+    }
+    input, button, select {
+      width: 80%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #187bcd;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px;
+      background: #34495e;
+      border-radius: 5px;
+      color: #ffbf00;
+      min-height: 50px;
+    }
+    .section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #3b3b3b;
+      border-radius: 8px;
+    }
+    .footer {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #222;
+      border-radius: 8px;
+      font-size: 14px;
+      color: white;
+    }
+    .footer a {
+      color: lightgray;
+      text-decoration: underline;
+    }
+    .dark-mode {
+      background-color: #fff;
+      color: #000;
+    }
+    .dark-mode .container, .dark-mode .section, .dark-mode .footer {
+      background-color: #ddd;
+    }
+
+    /* Sleek Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+      margin: 10px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: 0.4s;
+      border-radius: 30px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #1e90ff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+
+    /* Info Toggle Styling */
+    .info-toggle {
+      background: #555;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    .info-content {
+      display: none;
+      margin-top: 10px;
+      background: #444;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Disappearing Target Calculator 🧞‍♂️</h1>
+    <a href="https://usuckatshooting.com" target="_blank" style="color: lightgray;">Powered By USuckAtShooting</a><br>
+    
+    <!-- Dark Mode Toggle Switch -->
+    <label class="switch">
+      <input type="checkbox" id="toggleDarkMode">
+      <span class="slider"></span>
+    </label>
+
+    <input type="number" id="highHitFactor" placeholder="Current High Hit-Factor with NPMs">
+    <input type="number" id="pointsPerTarget" placeholder="Points gained by shooting disappearing target(s)">
+    <input type="number" id="timeToEngage" placeholder="Estimated Time to Engage disappearing target(s)">
+    <button id="calculateBtn">Calculate</button>
+    <div id="result" class="result"></div>
+
+    <!-- HHF Info Toggle -->
+    <div class="info-toggle" onclick="toggleInfo()">▼ How to Use This Calculator</div>
+    <div id="infoContent" class="info-content">
+      <h3>How to Use the Disappearing Target Calculator</h3>
+      <p>This tool helps you decide whether to take the "no penalty miss" (NPM) on a disappearing target or attempt to engage it for extra points. Here's how to use it:</p>
+      <ol>
+        <li><b>Current High Hit-Factor with NPMs</b>: Enter the current High Hit Factor (HHF) for the stage. This is the hit factor of the shooter who took the NPMs on the disappearing target.</li>
+        <li><b>Points gained by shooting disappearing target(s)</b>: Enter the total points you would gain by successfully engaging the disappearing target(s). For example, if the target is worth 10 points, enter 10.</li>
+        <li><b>Estimated Time to Engage disappearing target(s)</b>: Enter the estimated time (in seconds) it would take you to engage the disappearing target(s). Be realistic about your speed and accuracy (transitions + splits).</li>
+      </ol>
+      <p>Once you've entered the values, click <b>Calculate</b>. The tool will compare the points per second gained by engaging the target with the HHF. If the points per second are higher than the HHF, it suggests engaging the target. Otherwise, it suggests taking the no penalty miss.</p>
+      <p><b>Example</b>: If the HHF is 5.0, the target is worth 10 points, and it takes you 2 seconds to engage, the points per second would be 5.0 (10 ÷ 2). Since this equals the HHF, it’s a neutral decision, but you might choose to engage if you're confident in your speed and accuracy.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Disappearing Target Calculator</p>
+    <a href="https://linktr.ee/hitfactorgenie" target="_blank">HF Genie</a><br>
+    <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a><br>
+    <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a><br>
+    <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a><br>
+    <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a><br>
+    <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me</a>
+  </div>
+
+  <script>
+    // Dark Mode Toggle
+    document.getElementById("toggleDarkMode").addEventListener("change", function() {
+      document.body.classList.toggle("dark-mode");
+    });
+
+    // Disappearing Target Calculator
+    document.getElementById("calculateBtn").addEventListener("click", function() {
+      let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+      let pointsPerTarget = parseFloat(document.getElementById("pointsPerTarget").value) || 0;
+      let timeToEngage = parseFloat(document.getElementById("timeToEngage").value) || 0;
+
+      if (highHitFactor <= 0 || pointsPerTarget <= 0 || timeToEngage <= 0) {
+        document.getElementById("result").innerHTML = "Please enter valid numbers.";
+        return;
+      }
+
+      // Calculate the points gained per second
+      let pointsPerSecond = pointsPerTarget / timeToEngage;
+
+      // Compare with the High Hit Factor
+      if (pointsPerSecond > highHitFactor) {
+        document.getElementById("result").innerHTML = `
+          <b>Engage the target!</b><br>
+          Points per second (<b>${pointsPerSecond.toFixed(2)}</b>) is higher than the HHF (<b>${highHitFactor.toFixed(2)}</b>).
+        `;
+      } else {
+        document.getElementById("result").innerHTML = `
+          <b>Take the no penalty miss.</b><br>
+          Points per second (<b>${pointsPerSecond.toFixed(2)}</b>) is lower than the HHF (<b>${highHitFactor.toFixed(2)}</b>).
+        `;
+      }
+    });
+
+    // Info Toggle for HHF
+    function toggleInfo() {
+      var info = document.getElementById("infoContent");
+      info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
+    }
+  </script>
+</body>
+</html>
